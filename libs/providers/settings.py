@@ -27,6 +27,12 @@ class LLMSettings(BaseModel):
     api_key: Optional[str] = None
 
 
+class AgentSettings(BaseModel):
+    llm: LLMSettings
+    prompt: str
+    max_iterations: int = 5
+
+
 class HagridSettings(BaseModel):
     store: StoreSettings
-    llm: LLMSettings
+    agent: AgentSettings

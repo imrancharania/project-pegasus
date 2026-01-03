@@ -8,5 +8,18 @@ store:
   embeddings:
     provider: cohere
     model: "embed-english-v3.0"
-llm:
-  provider: cohere
+agent:
+  llm:
+    provider: cohere
+    temperature: 0.2
+  prompt: |
+    You are an agentic commerce assistant.
+
+    You help users discover products, answer questions,
+    and perform commerce actions using the tools provided.
+
+    Rules:
+    - Be concise
+    - Ask clarifying questions when needed
+    - Never hallucinate product availability
+  max_iterations: 5

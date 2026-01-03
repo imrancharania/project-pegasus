@@ -30,10 +30,10 @@ def load_settings():
             raise RuntimeError("MONGO_URI environment variable is required")
         settings.store.mongodb.uri = mongo_uri
 
-    if settings.llm:
+    if settings.agent.llm:
         api_key = os.environ.get("CHAT_MODEL_API_KEY")
         if api_key is None:
             raise RuntimeError("CHAT_MODEL_API_KEY environment variable is required")
-        settings.llm.api_key = api_key
+        settings.agent.llm.api_key = api_key
 
     return settings
