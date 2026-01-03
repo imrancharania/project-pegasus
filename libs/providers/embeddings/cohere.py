@@ -1,7 +1,7 @@
 from langchain_cohere import CohereEmbeddings
 
-from libs.providers.registry import register_embedding
-from libs.providers.settings import EmbeddingSettings
+from libs.core.registry import register_embedding
+from libs.core.settings import EmbeddingSettings
 
 
 @register_embedding("cohere")

@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 import yaml
 
-from libs.providers.settings import HagridSettings
+from libs.core.settings import PegasusSettings
 
 from dotenv import load_dotenv
 
@@ -14,7 +14,7 @@ def load_settings():
     with open(config_path, "r") as f:
         config_data = yaml.safe_load(f)
 
-    settings = HagridSettings.model_validate(config_data)
+    settings = PegasusSettings.model_validate(config_data)
 
     if settings.store.embeddings:
         api_key = os.environ.get("EMBEDDINGS_MODEL_API_KEY")

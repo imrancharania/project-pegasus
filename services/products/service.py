@@ -1,11 +1,12 @@
 from typing import List
-from libs.core.stores.base import BaseStore
+from libs.core.factory import create_store
+from libs.core.settings import PegasusSettings
 from services.models import Product
 
 
 class ProductsService:
-    def __init__(self, store: BaseStore) -> None:
-        self.store = store
+    def __init__(self, settings: PegasusSettings) -> None:
+        self.store = create_store(settings)
 
     def get_product_by_id(self, product_id: str) -> Product:
         pass

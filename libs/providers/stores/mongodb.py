@@ -9,8 +9,8 @@ from pymongo import MongoClient
 from pymongo.collection import Collection
 
 from libs.core.stores.base import BaseStore
-from libs.providers.registry import EMBEDDING_PROVIDERS, register_store
-from libs.providers.settings import StoreSettings
+from libs.core.registry import EMBEDDING_PROVIDERS, register_store
+from libs.core.settings import StoreSettings
 
 
 class MongoDBStore(BaseStore):

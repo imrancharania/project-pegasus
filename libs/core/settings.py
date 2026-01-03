@@ -33,6 +33,6 @@ class AgentSettings(BaseModel):
     max_iterations: int = 5
 
 
-class HagridSettings(BaseModel):
+class PegasusSettings(BaseModel):
     store: StoreSettings
     agent: AgentSettings
