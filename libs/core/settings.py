@@ -33,6 +33,20 @@ class AgentSettings(BaseModel):
     max_iterations: int = 5
 
 
+class OAuthSettings(BaseModel):
+    client_id: str
+    client_secret: str
+    token_url: str
+    scope: str
+
+
+class MerchantAPISettings(BaseModel):
+    base_url: str
+    timeout: Optional[int] = 10
+    oauth: OAuthSettings
+
+
 class PegasusSettings(BaseModel):
     store: StoreSettings
     agent: AgentSettings
+    merchant_api: MerchantAPISettings

@@ -23,3 +23,8 @@ agent:
     - Ask clarifying questions when needed
     - Never hallucinate product availability
   max_iterations: 5
+merchant_api:
+  base_url: "https://merchant.example.com/api"
+  timeout: 10
+  oauth:
+    scope: "checkout"

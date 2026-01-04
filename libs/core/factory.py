@@ -4,6 +4,7 @@ from langchain.messages import SystemMessage
 from langchain.agents import create_agent
 
 from libs.core.agent import Agent
+from libs.core.http import HttpClient
 from libs.core.stores.base import BaseStore
 from libs.core.registry import LLM_PROVIDERS, STORE_PROVIDERS
 from libs.core.settings import PegasusSettings
@@ -27,10 +28,16 @@ def create_llm(settings: PegasusSettings):
 
 
 def create_agent_graph(settings: PegasusSettings, tools: list[BaseTool]):
-    return Agent(create_agent(
-        model=create_llm(settings=settings),
-        tools=tools,
-        system_prompt=SystemMessage(
-            content=[{"type": "text", "text": settings.agent.prompt}]
-        ),
-    ))
+    return Agent(
+        create_agent(
+            model=create_llm(settings=settings),
+            tools=tools,
+            system_prompt=SystemMessage(
+                content=[{"type": "text", "text": settings.agent.prompt}]
+            ),
+        )
+    )
+
+
+def create_http_client(settings: PegasusSettings):
+    return HttpClient(settings=settings.merchant_api)
