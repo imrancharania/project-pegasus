@@ -1,7 +1,7 @@
-from typing import List
 from libs.core.factory import create_store
 from libs.core.settings import PegasusSettings
 from services.models import Product
+from services.products.schemas import ProductListResponse
 
 
 class ProductsService:
@@ -11,7 +11,7 @@ class ProductsService:
     def get_product_by_id(self, product_id: str) -> Product:
         pass
 
-    def get_products(self) -> List[Product]:
+    def get_products(self) -> ProductListResponse:
         records = self.store.query(filters=None)
 
         products = [
@@ -25,6 +25,9 @@ class ProductsService:
         pass
 
     def update_product(self, product_id: str, product: Product) -> None:
+        pass
+
+    def ingest_products(self, path: str, format: str) -> None:
         pass
 
     def delete_product(self, product_id: str) -> None:
