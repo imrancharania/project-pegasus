@@ -1,4 +1,3 @@
-# libs/core/merchant_api_client.py
 from authlib.integrations.httpx_client import AsyncOAuth2Client
 from typing import Optional
 

@@ -1,40 +1,26 @@
 from __future__ import annotations
-from datetime import datetime, timezone
 from typing import Optional
-from uuid import uuid4
 
-from libs.core.factory import create_http_client
-from libs.core.settings import PegasusSettings
+import httpx
+
 from payments.schemas import DelegatePaymentRequest, DelegatePaymentResponse, Error
+from services.base import BaseService
 
 API_VERSION = "2025-09-29"
 DELEGATE_PAYMENT_PATH = "/agentic_commerce/delegate_payment"
 
 
-class PaymentsService:
+class PaymentsService(BaseService):
     """
-    Async client for the Agentic Commerce Protocol — Delegate Payment API.
+    Async client for the Delegate Payment API.
 
     Responsibilities:
     - Send payment delegation requests to merchant APIs
     """
 
-    def __init__(self, settings: PegasusSettings) -> None:
-        self._http = create_http_client(settings)
-
     # ------------------------------------------------------------------
     # Helpers
     # ------------------------------------------------------------------
-
-    def _now_rfc3339(self) -> str:
-        return (
-            datetime.now(timezone.utc)
-            .isoformat(timespec="seconds")
-            .replace("+00:00", "Z")
-        )
-
-    def _new_idempotency_key(self) -> str:
-        return str(uuid4())
 
     def _headers(
         self,
@@ -72,17 +58,16 @@ class PaymentsService:
         """
         try:
             return await coro
-        except Exception as exc:
-            # Try to parse JSON error from merchant API
-            if hasattr(exc, "response") and exc.response is not None:
-                try:
-                    err = Error.model_validate(exc.response.json())
-                    raise RuntimeError(
-                        f"{err.type} / {err.code} / {err.message}"
-                    ) from exc
-                except Exception:
-                    pass
-            raise RuntimeError(f"Payments API request failed: {exc}") from exc
+        except httpx.HTTPStatusError as exc:
+            try:
+                err_json = exc.response.json()
+                err = Error.model_validate(err_json)
+            except Exception:
+                # Fallback if the response is not a valid Error
+                raise RuntimeError(f"Payments API request failed: {exc}") from exc
+            raise RuntimeError(
+                f"Payments API Error: {err.type} / {err.code} / {err.message}"
+            ) from exc
 
     # ------------------------------------------------------------------
     # Public API

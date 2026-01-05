@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
 from typing import Optional
 
 import httpx
@@ -12,14 +11,14 @@ from checkout.schemas import (
     CheckoutSessionCompleteRequest,
     Error,
 )
-from libs.core.factory import create_http_client
-from libs.core.settings import PegasusSettings
+
+from services.base import BaseService
 
 API_VERSION = "2025-09-29"
 CHECKOUT_BASE_PATH = "/agentic_checkout/sessions"
 
 
-class CheckoutService:
+class CheckoutService(BaseService):
     """
     Async client for the Agentic Checkout API.
 
@@ -29,24 +28,9 @@ class CheckoutService:
     - Complete checkout with delegated payment
     """
 
-    def __init__(self, settings: PegasusSettings) -> None:
-        self._http = create_http_client(settings)
-
     # ------------------------------------------------------------------
     # Internals
     # ------------------------------------------------------------------
-
-    def _now_rfc3339(self) -> str:
-        return (
-            datetime.now(timezone.utc)
-            .isoformat(timespec="seconds")
-            .replace("+00:00", "Z")
-        )
-
-    def _new_idempotency_key(self) -> str:
-        from uuid import uuid4
-
-        return str(uuid4())
 
     def _headers(
         self,
